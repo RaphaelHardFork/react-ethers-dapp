@@ -18,6 +18,7 @@ import detectEthereumProvider from "@metamask/detect-provider"
 export type Props = {
   children: ReactNode
   defaultConnectionType: ConnectionType
+  autoRefresh: boolean
   customNetworks: Network[]
   chainId: number
   apiKeys: ApiKeysOption
@@ -32,6 +33,7 @@ export const EVMContext = ({
   ) === null
     ? "not initialized"
     : "endpoints",
+  autoRefresh = true,
   customNetworks = [],
   chainId = Number(window.localStorage.getItem("network-to-initialize")) || 4,
   apiKeys = defaultApiOption,
@@ -43,6 +45,10 @@ export const EVMContext = ({
   const [connectionType, setConnectionType] = useState<ConnectionType>(
     defaultConnectionType
   )
+
+  // Auto refresh
+  const [autoRefreshActive, setAutoRefreshActive] =
+    useState<boolean>(autoRefresh)
 
   // provider
   const [provider, setProvider] = useState<Provider>(null)
@@ -62,9 +68,10 @@ export const EVMContext = ({
   function setAutoRefresh(setTo: boolean) {
     setProvider((p) => {
       if (p !== null) {
-        console.log(`Setting autorefresh to ${setTo}`)
         if (setTo) {
           if (p.listeners("block").length === 0) {
+            console.log("listerners added")
+            setAutoRefreshActive(true)
             return p.on("block", async (blockNumber: number) => {
               console.log(
                 `Block n°${blockNumber} emitted on ${network.name} (${network.chainId})`
@@ -78,6 +85,8 @@ export const EVMContext = ({
             return p
           }
         } else {
+          console.log("listerners removed")
+          setAutoRefreshActive(false)
           return p.removeAllListeners("block")
         }
       } else {
@@ -134,19 +143,28 @@ export const EVMContext = ({
     apiKeys
   )
   useInjection(connectionType, setProvider, setAccount, provider)
-  useNetwork(setProvider, setNetwork, provider, true, chainId, [])
+  useNetwork(
+    setProvider,
+    setNetwork,
+    provider,
+    autoRefreshActive,
+    chainId,
+    customNetworks
+  )
   useSigner(setAccount, setProvider, provider, network)
 
   return (
     <Context.Provider
       value={{
         connectionType,
+        autoRefreshActive,
         provider,
         methods: {
           launchConnection,
           setAutoRefresh,
           switchNetwork,
           loginToInjected,
+          haveWebExtension,
         },
         network,
         account,

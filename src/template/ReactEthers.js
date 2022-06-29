@@ -1,5 +1,7 @@
 import { Box, Flex, Heading, Image } from "@chakra-ui/react"
 import logo from "../react-ethers.svg"
+import ConnectionInfo from "./ConnectionInfo"
+import UserInfo from "./UserInfo"
 
 const ReactEthers = () => {
   return (
@@ -10,10 +12,10 @@ const ReactEthers = () => {
         fontSize="lg"
       >
         <Box shadow="lg" borderRadius="20" m="6" p="8" bg="#ffa793">
-          {/* <UserInfo /> */}A
+          <UserInfo />
         </Box>
         <Box shadow="lg" borderRadius="20" m="6" p="8" bg="#c082c9">
-          {/* <NetworkInfo /> */}B
+          <ConnectionInfo />
         </Box>
       </Flex>
 

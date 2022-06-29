@@ -4,7 +4,18 @@ import { EVMContext } from "./react-ethers/EVMContext"
 const App = () => {
   return (
     <>
-      <EVMContext>
+      <EVMContext
+        chainId={1313161554}
+        customNetworks={[
+          {
+            name: "Aurora Mainnet",
+            chainId: 1313161554,
+            blockHeight: 0,
+            publicEndpoints: ["https://mainnet.aurora.dev"],
+            explorerUrl: "https://aurorascan.dev/",
+          },
+        ]}
+      >
         <ReactEthers />
       </EVMContext>
     </>

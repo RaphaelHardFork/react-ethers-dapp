@@ -13,7 +13,7 @@ export const useSigner = (
   useEffect(() => {
     if (provider) {
       if (provider.hasOwnProperty("providerConfigs")) {
-        //
+        console.log("Not injected?")
       } else {
         ;(async () => {
           const request = (provider as Web3Provider).provider.request

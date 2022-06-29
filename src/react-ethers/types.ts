@@ -32,6 +32,7 @@ export type Methods = {
   setAutoRefresh: (setTo: boolean) => void
   switchNetwork: (chainId: number) => void
   loginToInjected: () => void
+  haveWebExtension: () => void
 }
 
 // --- connection type ---
@@ -48,6 +49,7 @@ export interface Config {
 // --- context load ---
 export type ContextLoad = {
   connectionType: ConnectionType
+  autoRefreshActive: boolean
   methods: Methods
   provider: Provider
   network: Network
