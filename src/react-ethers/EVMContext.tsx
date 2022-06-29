@@ -14,6 +14,7 @@ import { useSigner } from "./hooks/useSigner"
 import { Web3Provider } from "@ethersproject/providers"
 import { defaultApiOption } from "./utils/createFallbackProvider"
 import detectEthereumProvider from "@metamask/detect-provider"
+import { ethers } from "ethers"
 
 export type Props = {
   children: ReactNode
@@ -49,6 +50,9 @@ export const EVMContext = ({
   // Auto refresh
   const [autoRefreshActive, setAutoRefreshActive] =
     useState<boolean>(autoRefresh)
+
+  // Void Signer
+  const [voidSigner, setVoidSigner] = useState(false)
 
   // provider
   const [provider, setProvider] = useState<Provider>(null)
@@ -134,6 +138,37 @@ export const EVMContext = ({
     return ethereum ? true : false
   }
 
+  async function createVoidSigner(address: string) {
+    if (address.length !== 42 && !address.startsWith("0x")) {
+      console.warn("Wrong address format")
+    } else if (account.address) {
+      console.warn(
+        "Disconnect accounts from your extensions, or delete existant void signer"
+      )
+    } else {
+      if (provider) {
+        const signer = new ethers.VoidSigner(
+          ethers.utils.getAddress(address.toLowerCase()),
+          provider
+        )
+        const addressSummed = await signer.getAddress()
+        const balance = (await signer.getBalance()).toString()
+        setAccount({
+          address: addressSummed,
+          balance,
+          walletType: "void signer (watch only)",
+          isLogged: true,
+          signer: signer,
+        })
+        setVoidSigner(true)
+      }
+    }
+  }
+
+  function deleteVoidSigner() {
+    setVoidSigner(false)
+  }
+
   useEndpoints(
     connectionType,
     setProvider,
@@ -151,7 +186,7 @@ export const EVMContext = ({
     chainId,
     customNetworks
   )
-  useSigner(setAccount, setProvider, provider, network)
+  useSigner(setAccount, provider, network, voidSigner)
 
   return (
     <Context.Provider
@@ -165,6 +200,8 @@ export const EVMContext = ({
           switchNetwork,
           loginToInjected,
           haveWebExtension,
+          createVoidSigner,
+          deleteVoidSigner
         },
         network,
         account,

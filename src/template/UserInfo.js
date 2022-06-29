@@ -19,17 +19,42 @@ const UserInfo = () => {
 
       {/* LOG AN ACCOUNT */}
       {connectionType === "injected" ? (
+        <>
+          <Button
+            disabled={account.isLogged}
+            onClick={() => methods.loginToInjected()}
+          >
+            {account.isLogged ? "Logged" : "Login"}
+          </Button>
+        </>
+      ) : (
+        ""
+      )}
+
+      {connectionType !== "not initialized" ? (
         <Button
-          disabled={account.isLogged}
-          onClick={() => methods.loginToInjected()}
+          onClick={() =>
+            methods.createVoidSigner(
+              "0xe5cc7a18b29a090c4Cc72eC7270C4ee1498F73aF"
+            )
+          }
         >
-          {account.isLogged ? "Logged" : "Login"}
+          Use "watch-only" account
         </Button>
       ) : (
         ""
       )}
 
       {/* ACCOUNT INFO */}
+      {account.isLogged && account.walletType !== "metamask" ? (
+        <>
+          <Button onClick={() => methods.deleteVoidSigner()}>
+            Delete void signer
+          </Button>
+        </>
+      ) : (
+        ""
+      )}
       {account.isLogged ? (
         <>
           <Text>Address: {account.address}</Text>

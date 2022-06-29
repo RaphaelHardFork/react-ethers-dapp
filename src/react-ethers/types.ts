@@ -4,6 +4,7 @@ import {
   BaseProvider,
   JsonRpcSigner,
 } from "@ethersproject/providers"
+import { VoidSigner } from "ethers"
 
 // --- provider ---
 export type Provider = null | Web3Provider | FallbackProvider | BaseProvider
@@ -23,7 +24,7 @@ export interface Account {
   address: string
   balance: string | number
   walletType: string
-  signer: JsonRpcSigner
+  signer: JsonRpcSigner | VoidSigner
 }
 
 // --- methods ---
@@ -33,6 +34,8 @@ export type Methods = {
   switchNetwork: (chainId: number) => void
   loginToInjected: () => void
   haveWebExtension: () => void
+  createVoidSigner: (address: string) => void
+  deleteVoidSigner: () => void
 }
 
 // --- connection type ---
