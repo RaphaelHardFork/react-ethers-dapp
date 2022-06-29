@@ -31,6 +31,7 @@ const UserInfo = () => {
         ""
       )}
 
+      {/* CREATE VOID SIGNER (WATCH-ONLY) */}
       {connectionType !== "not initialized" ? (
         <Button
           onClick={() =>

@@ -15,6 +15,7 @@ import { Web3Provider } from "@ethersproject/providers"
 import { defaultApiOption } from "./utils/createFallbackProvider"
 import detectEthereumProvider from "@metamask/detect-provider"
 import { ethers } from "ethers"
+import { defaultNetworks, knownNetworks } from "./utils/createNetworkInterface"
 
 export type Props = {
   children: ReactNode
@@ -100,7 +101,7 @@ export const EVMContext = ({
   }
 
   async function switchNetwork(chainId: number) {
-    const paddedChainId = "0x" + chainId.toString(16)
+    const paddedChainId = "0x" + Number(chainId.toString()).toString(16) // thanks javascript
     if (connectionType === "endpoints") {
       window.localStorage.setItem("network-to-initialize", paddedChainId)
       window.location.reload()
@@ -169,6 +170,14 @@ export const EVMContext = ({
     setVoidSigner(false)
   }
 
+  function getNetworkList() {
+    let list: Network[] = []
+    list = list.concat(defaultNetworks)
+    list = list.concat(knownNetworks)
+    list = list.concat(customNetworks)
+    return list
+  }
+
   useEndpoints(
     connectionType,
     setProvider,
@@ -201,7 +210,8 @@ export const EVMContext = ({
           loginToInjected,
           haveWebExtension,
           createVoidSigner,
-          deleteVoidSigner
+          deleteVoidSigner,
+          getNetworkList,
         },
         network,
         account,

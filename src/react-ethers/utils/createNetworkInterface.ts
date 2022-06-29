@@ -84,7 +84,7 @@ const networkNull = {
   explorerUrl: "/",
 }
 
-const defaultNetworks = [
+export const defaultNetworks = [
   {
     name: "Ethereum mainnet",
     chainId: 1,
@@ -122,7 +122,7 @@ const defaultNetworks = [
   },
 ]
 
-const knownNetworks = [
+export const knownNetworks = [
   {
     name: "Binance Smart Chain",
     chainId: 56,

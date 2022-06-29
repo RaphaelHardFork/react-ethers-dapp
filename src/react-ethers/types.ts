@@ -36,6 +36,7 @@ export type Methods = {
   haveWebExtension: () => void
   createVoidSigner: (address: string) => void
   deleteVoidSigner: () => void
+  getNetworkList: () => Network[]
 }
 
 // --- connection type ---

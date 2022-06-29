@@ -1,8 +1,10 @@
-import { Button, Heading, Text } from "@chakra-ui/react"
+import { Button, Heading, Select, Text } from "@chakra-ui/react"
+import { useState } from "react"
 import { useEVM } from "../react-ethers/hooks/useEVM"
 
 const ConnectionInfo = () => {
   const { connectionType, methods, network, autoRefreshActive } = useEVM()
+  const [destination, setDestination] = useState(4)
 
   return (
     <>
@@ -54,6 +56,21 @@ const ConnectionInfo = () => {
       ) : (
         ""
       )}
+
+      {/* SWITCH NETWORK */}
+      <Text>Select a network</Text>
+      <Select bg="white" onChange={(e) => setDestination(e.target.value)}>
+        {methods.getNetworkList().map((n) => {
+          return (
+            <option key={n.chainId.toString(16)} value={n.chainId}>
+              {n.name}
+            </option>
+          )
+        })}
+      </Select>
+      <Button onClick={() => methods.switchNetwork(destination)}>
+        Go to {destination}
+      </Button>
     </>
   )
 }
