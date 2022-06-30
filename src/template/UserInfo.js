@@ -1,21 +1,13 @@
 import { Button, Heading, Text } from "@chakra-ui/react"
-import { useEffect, useState } from "react"
 import { useEVM } from "../react-ethers/hooks/useEVM"
 
 const UserInfo = () => {
-  const { methods, account, connectionType } = useEVM()
-  const [webExtension, setWebExtension] = useState(false)
+  const { methods, account, connectionType, haveWebExtension } = useEVM()
 
-  useEffect(() => {
-    const main = async () => {
-      setWebExtension(await methods.haveWebExtension())
-    }
-    main()
-  }, [methods, account])
   return (
     <>
       <Heading>User Info</Heading>
-      <Text>Have web extensions? {`${webExtension}`}</Text>
+      <Text>Have web extensions? {`${haveWebExtension}`}</Text>
 
       {/* LOG AN ACCOUNT */}
       {connectionType === "injected" ? (
