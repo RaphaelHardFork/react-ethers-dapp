@@ -8,6 +8,9 @@ const ConnectionInfo = () => {
 
   return (
     <>
+      <Button onClick={() => methods.launchConnection("injected")}>
+        Switch to web extensions
+      </Button>
       <Heading>ConnectionInfo</Heading>
       <Text>Connection type: {connectionType}</Text>
 
@@ -36,7 +39,6 @@ const ConnectionInfo = () => {
           <Button onClick={() => methods.launchConnection("injected")}>
             WebExtension
           </Button>
-          <Button>WalletConnect</Button>
         </>
       ) : (
         ""

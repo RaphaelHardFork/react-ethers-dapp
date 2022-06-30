@@ -60,9 +60,9 @@ export const EVMContext = ({
   const [network, setNetwork] = useState<Network>({} as Network)
   const [account, setAccount] = useState<Account>({} as Account)
 
-  function launchConnection(connectionType: ConnectionType) {
+  function launchConnection(_connectionType: ConnectionType) {
     if (!provider) {
-      setConnectionType(connectionType)
+      setConnectionType(_connectionType)
     } else {
       console.warn(
         "Connection type cannot be changed once the provider is set, you should reload the page"

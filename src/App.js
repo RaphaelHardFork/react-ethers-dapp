@@ -5,6 +5,7 @@ const App = () => {
   return (
     <>
       <EVMContext
+        autoRefresh={false}
         chainId={1313161554}
         customNetworks={[
           {
